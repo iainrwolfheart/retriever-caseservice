@@ -1,7 +1,7 @@
 package com.goldenretriever.caseservice.services;
 
 import com.goldenretriever.caseservice.entities.Case;
-import com.goldenretriever.caseservice.entities.requests.CreateCaseRequest;
+import com.goldenretriever.caseservice.entities.dto.CaseDto;
 import com.goldenretriever.caseservice.repositories.CaseRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,10 +16,10 @@ public class CaseService {
         this.caseRepository = caseRepository;
     }
 
-    public ResponseEntity<String> createCase(CreateCaseRequest createCaseRequest) {
+    public ResponseEntity<String> createCase(CaseDto createCaseDto) {
         Case newCase = new Case(
-                createCaseRequest.get_userId(),
-                createCaseRequest.getPoliceCaseNumber()
+                createCaseDto.get_userId(),
+                createCaseDto.getPoliceCaseNumber()
         );
         caseRepository.save(newCase);
         return ResponseEntity.status(HttpStatus.CREATED).body(newCase.get_caseId().toString());

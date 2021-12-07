@@ -1,6 +1,6 @@
 package com.goldenretriever.caseservice.controllers;
 
-import com.goldenretriever.caseservice.entities.requests.CreateCaseRequest;
+import com.goldenretriever.caseservice.entities.dto.CaseDto;
 import com.goldenretriever.caseservice.services.CaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,8 +22,8 @@ public class CaseController {
 
     @PostMapping("/create")
     public ResponseEntity<String> createCase(
-            @RequestBody CreateCaseRequest createCaseRequest) {
-        return caseService.createCase(createCaseRequest);
+            @RequestBody CaseDto createCaseDto) {
+        return caseService.createCase(createCaseDto);
     }
 //    Create case (no images)
 //    Upload images

@@ -1,12 +1,12 @@
 package com.goldenretriever.caseservice.services;
 
 import com.goldenretriever.caseservice.entities.Image;
+import com.goldenretriever.caseservice.entities.dto.ImageDto;
 import com.goldenretriever.caseservice.repositories.ImageRepository;
 import org.apache.tomcat.util.http.fileupload.impl.FileSizeLimitExceededException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
@@ -19,12 +19,10 @@ public class ImageService {
         this.imageRepository = imageRepository;
     }
 
-    public ResponseEntity<String> presaveImage(MultipartFile image, String _itemId) throws FileSizeLimitExceededException {
-
-//        Also need to handle exception thrown if file too big, maybs
+    public ResponseEntity<String> presaveImage(ImageDto image) throws FileSizeLimitExceededException {
 
         try {
-            Image imageToSave = new Image(_itemId, image.getBytes());
+            Image imageToSave = new Image(image.get_itemId(), image.getImage().getBytes());
             imageRepository.save(imageToSave);
             return ResponseEntity.status(HttpStatus.OK).body(imageToSave.get_imageId().toString());
         } catch (IOException ioe) {
