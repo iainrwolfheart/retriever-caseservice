@@ -1,9 +1,7 @@
 package com.goldenretriever.caseservice.controllers;
 
 import com.goldenretriever.caseservice.entities.dto.ImageDto;
-import com.goldenretriever.caseservice.services.ImageService;
-import org.apache.tomcat.util.http.fileupload.impl.FileSizeLimitExceededException;
-import org.springframework.http.HttpStatus;
+import com.goldenretriever.caseservice.services.LocalImageStorageService;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -15,20 +13,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/images")
 public class ImageController {
 
-    private ImageService imageService;
+    private LocalImageStorageService localImageStorageService;
 
-    public ImageController(ImageService imageService) {
-        this.imageService = imageService;
+    public ImageController(LocalImageStorageService localImageStorageService) {
+        this.localImageStorageService = localImageStorageService;
     }
 
     @PostMapping(value = "/presave", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<String> presaveImage(@ModelAttribute ImageDto image) {
-        try {
-            return imageService.presaveImage(image);
-        } catch (FileSizeLimitExceededException fileSizeExc) {
-            return ResponseEntity
-                    .status(HttpStatus.UNPROCESSABLE_ENTITY)
-                    .body("There was a problem saving this image...");
-        }
+    public ResponseEntity<String> presaveImage(@ModelAttribute ImageDto imageDto) {
+        return localImageStorageService.presaveImage(imageDto);
     }
 }
