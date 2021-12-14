@@ -2,6 +2,7 @@ package com.goldenretriever.caseservice.services;
 
 import com.goldenretriever.caseservice.entities.Item;
 import com.goldenretriever.caseservice.repositories.ItemRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,7 @@ public class ItemService {
 
     private ItemRepository itemRepository;
 
+    @Autowired
     public ItemService(ItemRepository itemRepository) {
         this.itemRepository = itemRepository;
     }

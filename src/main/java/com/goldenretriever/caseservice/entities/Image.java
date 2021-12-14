@@ -18,8 +18,8 @@ public class Image {
     private String _itemId;
     private byte[] binaryImage;
 
-    public Image(String _itemId, byte[] imageBytes) {
+    public Image(String _itemId, byte[] binaryImage) {
         this._itemId = _itemId;
-        this.binaryImage = imageBytes;
+        this.binaryImage = binaryImage;
     }
 }

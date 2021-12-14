@@ -15,4 +15,10 @@ public class ImageControllerAdvice {
                 .body("File must not exceed 5MB");
     }
 
+//    @ExceptionHandler(IOException.class)
+//    public ResponseEntity<String> handleIOExceptionWhenStoringImagesToDB(IOException ioException) {
+//        return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY)
+//                .body("Unable to store item images to long term storage. Please try again.");
+//    }
+
 }

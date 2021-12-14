@@ -1,6 +1,7 @@
 package com.goldenretriever.caseservice.services;
 
 import com.goldenretriever.caseservice.entities.dto.ImageDto;
+import org.springframework.http.ResponseEntity;
 
 import java.io.IOException;
 
@@ -13,9 +14,9 @@ public interface ImageStorageService {
      */
     String saveImageDetailsToDB(ImageDto image) throws IOException;
 
-//    boolean store(MultipartFile file);
+     ResponseEntity<String> saveItemImagesToStorage(String _caseId, String _itemId) throws IOException;
 //
-//    Stream<Path> loadAll();
+//    Stream<Path> loadAll(String _itemId);
 //
 //    Path load(String filename);
 //
