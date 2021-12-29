@@ -8,11 +8,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 
 @Service
@@ -59,15 +59,35 @@ public class LocalImageStorageService implements ImageStorageService {
     }
 
     public void storeItemImagesToLocalStorage(List<Image> itemImagesToStoreToDB) throws IOException {
-        for (Image image : itemImagesToStoreToDB) {
-            ByteArrayInputStream imageStream = new ByteArrayInputStream(image.getBinaryImage());
-            BufferedImage imageBuffered = ImageIO.read(imageStream);
 
-//            UPDATE THIS TO DYNAMICALLY CREATE/FIND FOLDER BY ITEMID
-            ImageIO.write(imageBuffered, "jpg", new File(String.format(
-                    "/Users/goz/Desktop/image_store/%s_%s.jpg", image.get_itemId(), image.get_imageId())
-            ));
+        String path = "/Users/goz/Desktop/image_store/";
+
+        int tally = 0;
+
+        System.out.println("There are " + itemImagesToStoreToDB.size() + " images to save.");
+
+        for (Image image : itemImagesToStoreToDB) {
+            System.out.println("ImageID: " + image.get_imageId());
+            tally += storeImage(image);
         }
+
+        System.out.println(tally + " images should have been successfully saved...");
+    }
+
+    public int storeImage(Image image) throws IOException {
+        String path = "/Users/goz/Desktop/image_store/";
+        String dir = image.get_itemId() + "/";
+
+        if (!Files.exists(Paths.get(path.concat(dir)))) {
+            File dirAsFile = new File(path.concat(dir));
+            dirAsFile.mkdir();
+        }
+
+        try (FileOutputStream stream = new FileOutputStream(path + dir + image.get_imageId())) {
+            stream.write(image.getBinaryImage());
+        }
+
+        return 1;
     }
 //
 //    @Override
