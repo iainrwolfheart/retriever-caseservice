@@ -3,9 +3,6 @@ package com.goldenretriever.caseservice;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 @SpringBootApplication
@@ -14,11 +11,6 @@ public class CaseServiceApplication {
 	public static void main(String[] args) throws IOException {
 		SpringApplication.run(CaseServiceApplication.class, args);
 
-		BufferedImage testImage = ImageIO.read(new java.io.File("/Users/goz/Documents/ONB/Merch/IMG-1355.JPG"));
-		ByteArrayOutputStream imageAsOS = new ByteArrayOutputStream();
-		ImageIO.write(testImage, "jpg", imageAsOS);
-		byte[] bytes = imageAsOS.toByteArray();
-		System.out.println(bytes.length);
 
 /*	User enters case details, - DONE
 	case is created and saved to db, - DONE
@@ -45,6 +37,8 @@ public class CaseServiceApplication {
 	- remove from chosen hosting,
 	- remove from items table
 	- remove case from cases table
+
+	Need to abstract away the DB saving stuff from the storage saving stuff to avoid repetition!
 */
 	}
 

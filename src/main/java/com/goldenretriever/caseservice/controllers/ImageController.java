@@ -31,4 +31,11 @@ public class ImageController {
                                            @PathVariable(name = "_itemId") String _itemId) {
         return localImageStorageService.saveItemImagesToStorage(_caseId, _itemId);
     }
+
+//    deselect image - remove individual image from presave table
+    @DeleteMapping(value = "/removepresavedimage/{_imageId}")
+    public ResponseEntity<String> removePresavedImage(@PathVariable(name = "_imageId") String _imageId) {
+        return localImageStorageService.removePresavedImageFromDB(_imageId);
+    }
+//    delete item and remove all images
 }

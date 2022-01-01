@@ -32,10 +32,23 @@ public class LocalImageStorageService implements ImageStorageService {
         } catch (IOException ioe) {
             return ResponseEntity
                     .status(HttpStatus.UNPROCESSABLE_ENTITY)
-                    .body("There was a problem saving this image...");
+                    .body("There was a problem saving this image... " +
+                            "Either it already exists or there was another issue saving it.");
         }
     }
 
+    /**
+     * Stores image, including it's binary, to MongoDB table. This is done as the user is uploading images for an item.
+     *      Once the user confirms the item, the item images are all saved in their original format to the desired
+     *      solution (see saveItemImagesToStorage).
+     *
+     * Currently no obvious way to check if image already exists in the table.
+     *      Searching by binaryImage of the imageToSave returns an empty list...
+     *
+     * @param image data transfer object, comprises Multipart File and related _itemId
+     * @return stringified _imageId, auto-created as it's saved in MongoDB
+     * @throws IOException - May be inappropriate
+     */
     @Override
     public String saveImageDetailsToDB(ImageDto image) throws IOException {
         Image imageToSave = new Image(image.get_itemId(), image.getImage().getBytes());
@@ -48,7 +61,7 @@ public class LocalImageStorageService implements ImageStorageService {
         List<Image> itemImagesToStoreToDB = imageRepository.findBy(_itemId);
 
         try {
-            storeItemImagesToLocalStorage(itemImagesToStoreToDB);
+            storeItemImagesToLocalStorage(itemImagesToStoreToDB, _itemId);
         } catch (IOException ioe){
             return ResponseEntity
                     .status(HttpStatus.UNPROCESSABLE_ENTITY)
@@ -58,37 +71,34 @@ public class LocalImageStorageService implements ImageStorageService {
         return ResponseEntity.status(HttpStatus.OK).body("Appropriate response message here, please.");
     }
 
-    public void storeItemImagesToLocalStorage(List<Image> itemImagesToStoreToDB) throws IOException {
-
-        String path = "/Users/goz/Desktop/image_store/";
-
-        int tally = 0;
-
-        System.out.println("There are " + itemImagesToStoreToDB.size() + " images to save.");
-
-        for (Image image : itemImagesToStoreToDB) {
-            System.out.println("ImageID: " + image.get_imageId());
-            tally += storeImage(image);
-        }
-
-        System.out.println(tally + " images should have been successfully saved...");
-    }
-
-    public int storeImage(Image image) throws IOException {
-        String path = "/Users/goz/Desktop/image_store/";
-        String dir = image.get_itemId() + "/";
-
-        if (!Files.exists(Paths.get(path.concat(dir)))) {
-            File dirAsFile = new File(path.concat(dir));
+    /**
+     * Handles the actual writing of images to local storage for dev purposes.
+     * Uses _itemId to create folder to store images in
+     * Each image is named using it's _imageId String
+     * @param itemImagesToStoreToDB List of images.
+     * @param _itemId to which all images in the list are bound
+     * @throws IOException
+     */
+    public void storeItemImagesToLocalStorage(List<Image> itemImagesToStoreToDB, String _itemId) throws IOException {
+        String path = "/Users/goz/Desktop/image_store/" + _itemId + "/";
+        if (!Files.exists(Paths.get(path))) {
+            File dirAsFile = new File(path);
             dirAsFile.mkdir();
         }
-
-        try (FileOutputStream stream = new FileOutputStream(path + dir + image.get_imageId())) {
-            stream.write(image.getBinaryImage());
+        for (Image image : itemImagesToStoreToDB) {
+            try (FileOutputStream stream = new FileOutputStream(path + image.get_imageId())) {
+                stream.write(image.getBinaryImage());
+            }
         }
-
-        return 1;
     }
+
+    public ResponseEntity<String> removePresavedImageFromDB(String _imageId) {
+        imageRepository.deleteBy_imageId(_imageId);
+        return ResponseEntity
+                .status(HttpStatus.NO_CONTENT)
+                .body("Image removed successfully.");
+    }
+
 //
 //    @Override
 //    public Stream<Path> loadAll() {
