@@ -38,8 +38,8 @@ public class CaseServiceApplication {
 	- remove from items table
 	- remove case from cases table
 
-	Need to abstract away the DB saving stuff from the storage saving stuff to avoid repetition!
-*/
+//	ImageService - need to put the factory Storage Service String variable into a config file..?
+	*/
 	}
 
 }

@@ -1,20 +1,16 @@
 package com.goldenretriever.caseservice.services;
 
-import com.goldenretriever.caseservice.entities.dto.ImageDto;
-import org.springframework.http.ResponseEntity;
+import com.goldenretriever.caseservice.entities.Image;
 
 import java.io.IOException;
+import java.util.List;
 
 public interface ImageStorageService {
 
 //    void init();
 
-    /**
-    @return _imageId
-     */
-    String saveImageDetailsToDB(ImageDto image) throws IOException;
-
-     ResponseEntity<String> saveItemImagesToStorage(String _caseId, String _itemId) throws IOException;
+    void saveItemImagesToStorage(List<Image> itemImagesToStoreToDB, String _caseId, String _itemId)
+             throws IOException;
 //
 //    Stream<Path> loadAll(String _itemId);
 //

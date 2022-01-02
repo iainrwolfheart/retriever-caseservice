@@ -23,4 +23,10 @@ public class ItemService {
 
         return ResponseEntity.status(HttpStatus.OK).body(newItem.get_itemId().toString());
     }
+
+//    public ResponseEntity<String> removeItem(String itemId) {
+//        Send itemId to image service to delete all images with that Id from both DB and selected storage
+//        itemRepo.delete
+//        Return status etc
+//    }
 }
