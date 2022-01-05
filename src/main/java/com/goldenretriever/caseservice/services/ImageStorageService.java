@@ -14,10 +14,6 @@ public interface ImageStorageService {
 //
 //    Stream<Path> loadAll(String _itemId);
 //
-//    Path load(String filename);
-//
-//    Resource loadAsResource(String filename);
-//
-//    void deleteAll(String _itemId);
+    void deleteAll(String _itemId) throws IOException;
 
 }

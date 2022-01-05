@@ -21,8 +21,8 @@ public class ItemController {
     }
 
     //    delete item and remove all images
-//    @DeleteMapping(value = "/remove/{_itemId}")
-//    public ResponseEntity<String> removeItem(@PathVariable(value = "_itemId") String _itemId) {
-//        return itemService.removeItem(_itemId);
-//    }
+    @DeleteMapping(value = "/remove/{_itemId}")
+    public ResponseEntity<String> removeItem(@PathVariable(value = "_itemId") String _itemId) {
+        return itemService.removeItem(_itemId);
+    }
 }

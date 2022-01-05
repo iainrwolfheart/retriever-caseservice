@@ -8,6 +8,11 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 
+/**
+ * Image location URL is NOT currently a field of the Image class. This is because the location URL is built from
+ * the class fields, specifically _itemId.toString and _imageId.toString().
+ * This implementation may change as the production storage solution is introduced.
+ */
 @Document(collection = "images")
 @Data
 public class Image {

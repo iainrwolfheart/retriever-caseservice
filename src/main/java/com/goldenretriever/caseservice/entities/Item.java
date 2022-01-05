@@ -1,7 +1,6 @@
 package com.goldenretriever.caseservice.entities;
 
 import lombok.Data;
-import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -14,7 +13,7 @@ public class Item {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private ObjectId _itemId;
+    private String _itemId;
     private String _caseId;
     private String name;
     private String description;

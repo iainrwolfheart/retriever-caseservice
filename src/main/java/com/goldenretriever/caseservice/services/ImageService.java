@@ -22,9 +22,18 @@ public class ImageService<T extends ImageStorageService> {
         this.storageService = storageServiceFactory.create("Local");
     }
 
-    public ResponseEntity<String> presaveImage(ImageDto image) {
+    /**
+     * Receives request from ImageController.
+     * Uses saveImageDetailsToDB() method to communicate with ImageRepository() before creating appropriate ResponseEntity.
+     *
+     * @param imageDto data transfer object, comprising Multipart file (the image) and corresponding _itemId to which the
+     *       image is linked.
+     * @return ResponseStatus 200 indicating successful saving of Image details to database OR 422
+     *       if something goes wrong.
+     */
+    public ResponseEntity<String> presaveImage(ImageDto imageDto) {
         try {
-            String _imageId = saveImageDetailsToDB(image);
+            String _imageId = saveImageDetailsToDB(imageDto);
             return ResponseEntity.status(HttpStatus.OK).body(_imageId);
         } catch (IOException ioe) {
             return ResponseEntity
@@ -42,12 +51,12 @@ public class ImageService<T extends ImageStorageService> {
      * Currently no obvious way to check if image already exists in the table.
      *      Searching by binaryImage of the imageToSave returns an empty list...
      *
-     * @param image data transfer object, comprises Multipart File and related _itemId
+     * @param imageDto data transfer object, comprises Multipart File and related _itemId
      * @return stringified _imageId, auto-created as it's saved in MongoDB
      * @throws IOException - May be inappropriate
      */
-    public String saveImageDetailsToDB(ImageDto image) throws IOException {
-        Image imageToSave = new Image(image.get_itemId(), image.getImage().getBytes());
+    public String saveImageDetailsToDB(ImageDto imageDto) throws IOException {
+        Image imageToSave = new Image(imageDto.get_itemId(), imageDto.getImage().getBytes());
         imageRepository.save(imageToSave);
         return imageToSave.get_imageId().toString();
     }
@@ -72,5 +81,19 @@ public class ImageService<T extends ImageStorageService> {
         }
 
         return ResponseEntity.status(HttpStatus.OK).body("Appropriate response message here, please.");
+    }
+
+
+    /**
+     * Called by ItemService.removeItem() when an item is to be removed from a Case, either because the case has been
+     *      resolved, or a specific item has been found or mistakenly declared as part of the Case.
+     *
+     * Calls the storageService to remove all the images.
+     * Then removes all the Images' details from the DB
+     *
+     * @param _itemId
+     */
+    public void removeItemImages(String _itemId) throws IOException{
+            storageService.deleteAll(_itemId);
     }
 }

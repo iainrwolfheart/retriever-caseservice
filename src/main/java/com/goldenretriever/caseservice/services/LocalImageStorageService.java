@@ -1,6 +1,7 @@
 package com.goldenretriever.caseservice.services;
 
 import com.goldenretriever.caseservice.entities.Image;
+import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -38,6 +39,11 @@ public class LocalImageStorageService implements ImageStorageService {
         }
     }
 
+    @Override
+    public void deleteAll(String _itemId) throws IOException {
+        String path = "/Users/goz/Desktop/image_store/" + _itemId + "/";
+        FileUtils.deleteDirectory(new File(path));
+    }
 
 
 //
