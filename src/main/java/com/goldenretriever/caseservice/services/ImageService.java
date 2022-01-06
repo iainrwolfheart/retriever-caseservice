@@ -95,5 +95,6 @@ public class ImageService<T extends ImageStorageService> {
      */
     public void removeItemImages(String _itemId) throws IOException{
             storageService.deleteAll(_itemId);
+            imageRepository.deleteBy_itemId(_itemId);
     }
 }

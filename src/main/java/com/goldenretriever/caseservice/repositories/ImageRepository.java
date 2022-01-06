@@ -18,4 +18,6 @@ public interface ImageRepository extends MongoRepository<Image, ObjectId> {
     List<Image> findByBinaryImage(byte[] binaryImage);
 
     void deleteBy_imageId(String _imageId);
+// hmmmmmmm
+    void deleteBy_itemId(String _itemId);
 }
