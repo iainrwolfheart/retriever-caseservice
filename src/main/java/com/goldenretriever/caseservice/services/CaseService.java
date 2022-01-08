@@ -11,9 +11,11 @@ import org.springframework.stereotype.Service;
 public class CaseService {
 
     private CaseRepository caseRepository;
+    private ItemService itemService;
 
-    public CaseService(CaseRepository caseRepository) {
+    public CaseService(CaseRepository caseRepository, ItemService itemService) {
         this.caseRepository = caseRepository;
+        this.itemService = itemService;
     }
 
     public ResponseEntity<String> createCase(CaseDto createCaseDto) {
@@ -23,5 +25,17 @@ public class CaseService {
         );
         caseRepository.save(newCase);
         return ResponseEntity.status(HttpStatus.CREATED).body(newCase.get_caseId().toString());
+    }
+
+    public ResponseEntity<String> deleteCase(String _caseId) {
+//        Send caseId to itemService
+        itemService.removeCaseItems(_caseId);
+//        Get list of items by caseId
+//        for each item
+//              delete images from DB and Storage
+//              Delete item from DB
+//        Delete case from DB
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Not yet implemented!");
+
     }
 }
