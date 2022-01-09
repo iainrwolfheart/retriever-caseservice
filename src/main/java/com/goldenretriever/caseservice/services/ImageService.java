@@ -69,7 +69,7 @@ public class ImageService<T extends ImageStorageService> {
     }
 
     public ResponseEntity<String> saveItemImages(String _caseId, String _itemId) {
-        List<Image> itemImagesToStoreToDB = imageRepository.findBy(_itemId);
+        List<Image> itemImagesToStoreToDB = imageRepository.findBy_itemId(_itemId);
 
         try {
             storageService.saveItemImagesToStorage(itemImagesToStoreToDB, _caseId, _itemId);

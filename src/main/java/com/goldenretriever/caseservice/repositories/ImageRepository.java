@@ -11,8 +11,7 @@ import java.util.List;
 @Repository
 public interface ImageRepository extends MongoRepository<Image, ObjectId> {
 
-//    @Query(value = "{'_itemId': '0?'}")
-    List<Image> findBy(String _itemId);
+    List<Image> findBy_itemId(String _itemId);
 
     @Query(value = "{'binaryImage': '0?'}")
     List<Image> findByBinaryImage(byte[] binaryImage);
